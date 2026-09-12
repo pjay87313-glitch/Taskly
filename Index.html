@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskPay - Earn Rewards</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#f4f6fb;
+  color:#172033;
+}
+
+.app{
+  max-width:900px;
+  margin:auto;
+  min-height:100vh;
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,#5548e8,#8b5cf6);
+  color:white;
+  padding:25px 20px 90px;
+  border-radius:0 0 30px 30px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:23px;
+  font-weight:bold;
+}
+
+.demo{
+  background:#ffffff30;
+  padding:8px 12px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.hero{
+  margin-top:30px;
+}
+
+.hero h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+
+.hero p{
+  opacity:.9;
+}
+
+/* MAIN */
+main{
+  margin:-55px 15px 30px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  margin-bottom:15px;
+  box-shadow:0 8px 25px #17203312;
+}
+
+/* BALANCE */
+.balance{
+  background:#18203a;
+  color:white;
+}
+
+.balance small{
+  opacity:.7;
+}
+
+.money{
+  font-size:35px;
+  font-weight:bold;
+  margin:10px 0 18px;
+}
+
+.btn{
+  border:0;
+  padding:11px 16px;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.primary{
+  background:#6858f4;
+  color:white;
+}
+
+.light{
+  background:#eeeaff;
+  color:#5548e8;
+}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.stat strong{
+  display:block;
+  font-size:22px;
+  margin-top:7px;
+}
+
+.muted{
+  color:#778198;
+  font-size:13px;
+}
+
+/* TASK */
+.task{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid #eee;
+}
+
+.icon{
+  font-size:22px;
+  background:#f0efff;
+  padding:10px;
+  border-radius:12px;
+}
+
+.info{
+  flex:1;
+}
+
+.info b{
+  display:block;
+  margin-bottom:4px;
+}
+
+.info small{
+  color:#7b8498;
+}
+
+.reward{
+  color:#14925b;
+  font-weight:bold;
+}
+
+/* NAVIGATION */
+nav{
+  position:sticky;
+  bottom:10px;
+  background:white;
+  border-radius:18px;
+  padding:8px;
+  display:flex;
+  justify-content:space-around;
+  box-shadow:0 8px 25px #17203318;
+}
+
+nav button{
+  background:none;
+  border:0;
+  padding:8px 15px;
+  color:#69738a;
+  cursor:pointer;
+}
+
+nav button.active{
+  color:#5b4cf0;
+  font-weight:bold;
+}
+
+/* PAGES */
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+/* NOTICE */
+.notice{
+  background:#fff7df;
+  padding:14px;
+  border-radius:13px;
+  font-size:13px;
+  color:#705a18;
+}
+
+/* INPUT */
+input{
+  width:100%;
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  margin:8px 0 14px;
+  outline:none;
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#111827aa;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modalbox{
+  background:white;
+  padding:22px;
+  border-radius:22px;
+  width:min(400px,100%);
+}
+
+.close{
+  float:right;
+  border:0;
+  background:#eee;
+  border-radius:50%;
+  padding:7px 10px;
+  cursor:pointer;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .stats .stat:last-child{
+    grid-column:span 2;
+  }
+
+  .hero h1{
+    font-size:27px;
+  }
+
+  .task{
+    flex-wrap:wrap;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- HEADER -->
+<header>
+
+  <div class="top">
+
+    <div class="logo">
+      ⚡ TaskPay
+    </div>
+
+    <div class="demo">
+      DEMO
+    </div>
+
+  </div>
+
+  <div class="hero">
+
+    <h1>
+      Complete tasks. Earn rewards.
+    </h1>
+
+    <p>
+      Complete simple tasks and collect rewards.
+    </p>
+
+  </div>
+
+</header>
+
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+  <!-- BALANCE -->
+  <div class="card balance">
+
+    <small>
+      Available Balance
+    </small>
+
+    <div class="money">
+      ₹<span id="balance">12.50</span>
+    </div>
+
+    <button
+      class="btn light"
+      onclick="openWithdraw()">
+      Withdraw from ₹30
+    </button>
+
+  </div>
+
+
+  <!-- STATS -->
+  <div class="stats">
+
+    <div class="card stat">
+
+      <span class="muted">
+        Tasks Done
+      </span>
+
+      <strong id="done">
+        2
+      </strong>
+
+    </div>
+
+
+    <div class="card stat">
+
+      <span class="muted">
+        Total Earned
+      </span>
+
+      <strong>
+        ₹42.50
+      </strong>
+
+    </div>
+
+
+    <div class="card stat">
+
+      <span class="muted">
+        Referrals
+      </span>
+
+      <strong>
+        0
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- TASKS -->
+  <div class="card">
+
+    <h2 style="margin-bottom:15px;">
+      Today's Tasks
+    </h2>
+
+    <div id="tasks">
+    </div>
+
+  </div>
+
+
+  <div class="notice">
+
+    💡 Demo website only.
+    No real money is transferred.
+    No deposit is required.
+
+  </div>
+
+</section>
+
+
+<!-- WALLET -->
+<section id="wallet" class="page">
+
+  <div class="card">
+
+    <h2>
+      My Wallet
+    </h2>
+
+    <div class="money">
+      ₹<span id="balance2">12.50</span>
+    </div>
+
+    <button
+      class="btn primary"
+      onclick="openWithdraw()">
+
+      Request Withdrawal
+
+    </button>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2 style="margin-bottom:15px;">
+      Withdrawal History
+    </h2>
+
+    <div id="history"
+         class="muted">
+
+      No withdrawal requests yet.
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+
+  <div class="card">
+
+    <h2>
+      My Profile
+    </h2>
+
+    <br>
+
+    <input
+      id="name"
+      placeholder="Your Name">
+
+    <input
+      id="email"
+      placeholder="Email">
+
+    <button
+      class="btn primary"
+      onclick="saveProfile()">
+
+      Save Profile
+
+    </button>
+
+    <p
+      id="saved"
+      style="margin-top:12px;color:#15945d;">
+    </p>
+
+  </div>
+
+
+  <div class="card">
+
+    <h3>
+      About
+    </h3>
+
+    <p
+      class="muted"
+      style="margin-top:8px;line-height:1.5;">
+
+      TaskPay is a front-end rewards website
+      prototype. Real payment functionality,
+      identity verification and production
+      security are not included in this demo.
+
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- NAV -->
+<nav>
+
+  <button
+    class="active"
+    onclick="showPage('home',this)">
+
+    🏠
+    <br>
+    Home
+
+  </button>
+
+
+  <button
+    onclick="showPage('wallet',this)">
+
+    💰
+    <br>
+    Wallet
+
+  </button>
+
+
+  <button
+    onclick="showPage('profile',this)">
+
+    👤
+    <br>
+    Profile
+
+  </button>
+
+</nav>
+
+</main>
+
+</div>
+
+
+<!-- WITHDRAW MODAL -->
+<div
+  id="withdrawModal"
+  class="modal">
+
+  <div class="modalbox">
+
+    <button
+      class="close"
+      onclick="closeWithdraw()">
+
+      ×
+
+    </button>
+
+    <h2>
+      Withdraw
+    </h2>
+
+    <p
+      class="muted"
+      style="margin:10px 0 15px;">
+
+      Minimum withdrawal is ₹30.
+
+    </p>
+
+    <input
+      id="amount"
+      type="number"
+      placeholder="Enter amount">
+
+    <button
+      class="btn primary"
+      style="width:100%;"
+      onclick="withdraw()">
+
+      Submit Request
+
+    </button>
+
+    <p
+      id="message"
+      style="margin-top:12px;">
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ---------------------------
+   DEMO DATA
+---------------------------- */
+
+let balance = 12.50;
+
+let done = 2;
+
+let completed = new Set();
+
+
+const taskData = [
+
+  {
+    icon:"📝",
+    name:"Quick Feedback",
+    description:"Answer demo questions",
+    reward:5
+  },
+
+  {
+    icon:"🔎",
+    name:"Content Check",
+    description:"Review a sample item",
+    reward:7.5
+  },
+
+  {
+    icon:"📚",
+    name:"Mini Learning",
+    description:"Read a demo lesson",
+    reward:10
+  },
+
+  {
+    icon:"🎯",
+    name:"Daily Challenge",
+    description:"Complete a demo quiz",
+    reward:12
+  }
+
+];
+
+
+/* ---------------------------
+   DISPLAY TASKS
+---------------------------- */
+
+function renderTasks(){
+
+  const box =
+    document.getElementById("tasks");
+
+  box.innerHTML = "";
+
+
+  taskData.forEach((task,index)=>{
+
+    const div =
+      document.createElement("div");
+
+    div.className = "task";
+
+
+    div.innerHTML = `
+
+      <div class="icon">
+        ${task.icon}
+      </div>
+
+      <div class="info">
+
+        <b>
+          ${task.name}
+        </b>
+
+        <small>
+          ${task.description}
+        </small>
+
+      </div>
+
+      <span class="reward">
+        +₹${task.reward}
+      </span>
+
+      <button
+        class="btn ${completed.has(index) ? "light" : "primary"}"
+        onclick="completeTask(${index})">
+
+        ${completed.has(index) ? "Done" : "Start"}
+
+      </button>
+
+    `;
+
+
+    box.appendChild(div);
+
+  });
+
+}
+
+
+/* ---------------------------
+   COMPLETE TASK
+---------------------------- */
+
+function completeTask(index){
+
+  if(completed.has(index)){
+    return;
+  }
+
+
+  const task =
+    taskData[index];
+
+
+  completed.add(index);
+
+
+  balance += task.reward;
+
+  done++;
+
+
+  updateBalance();
+
+  renderTasks();
+
+
+  alert(
+    "Demo task completed!\n₹" +
+    task.reward +
+    " reward added."
+  );
+
+}
+
+
+/* ---------------------------
+   UPDATE BALANCE
+---------------------------- */
+
+function updateBalance(){
+
+  document.getElementById("balance")
+    .textContent =
+    balance.toFixed(2);
+
+
+  document.getElementById("balance2")
+    .textContent =
+    balance.toFixed(2);
+
+
+  document.getElementById("done")
+    .textContent =
+    done;
+
+}
+
+
+/* ---------------------------
+   PAGE NAVIGATION
+---------------------------- */
+
+function showPage(page,button){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p=>{
+      p.classList.remove("active");
+    });
+
+
+  document
+    .getElementById(page)
+    .classList.add("active");
+
+
+  document
+    .querySelectorAll("nav button")
+    .forEach(b=>{
+      b.classList.remove("active");
+    });
+
+
+  button.classList.add("active");
+
+}
+
+
+/* ---------------------------
+   WITHDRAW MODAL
+---------------------------- */
+
+function openWithdraw(){
+
+  document
+    .getElementById("withdrawModal")
+    .classList.add("show");
+
+}
+
+
+function closeWithdraw(){
+
+  document
+    .getElementById("withdrawModal")
+    .classList.remove("show");
+
+}
+
+
+/* ---------------------------
+   WITHDRAW
+---------------------------- */
+
+function withdraw(){
+
+  const amount =
+    Number(
+      document.getElementById("amount").value
+    );
+
+
+  const message =
+    document.getElementById("message");
+
+
+  if(amount < 30){
+
+    message.style.color = "#c2410c";
+
+    message.textContent =
+      "Minimum withdrawal is ₹30.";
+
+    return;
+
+  }
+
+
+  if(amount > balance){
+
+    message.style.color = "#c2410c";
+
+    message.textContent =
+      "Insufficient demo balance.";
+
+    return;
+
+  }
+
+
+  balance -= amount;
+
+
+  updateBalance();
+
+
+  document.getElementById("history")
+    .innerHTML = `
+
+      <div style="
+        padding:12px 0;
+        border-bottom:1px solid #eee;
+      ">
+
+        Withdrawal ₹${amount.toFixed(2)}
+
+        <br>
+
+        <span style="color:#b47b00;">
+          Demo Pending
+        </span>
+
+      </div>
+
+    `;
+
+
+  message.style.color =
+    "#15945d";
+
+
+  message.textContent =
+    "Demo request created. No real payment was made.";
+
+}
+
+
+/* ---------------------------
+   PROFILE
+---------------------------- */
+
+function saveProfile(){
+
+  document.getElementById("saved")
+    .textContent =
+    "Profile saved in this demo.";
+
+}
+
+
+/* ---------------------------
+   START
+---------------------------- */
+
+renderTasks();
+
+updateBalance();
+
+</script>
+
+</body>
+</html>se 
